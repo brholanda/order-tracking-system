@@ -19,7 +19,7 @@ public class OrderConsumer {
     private OrderService service;
     ModelMapper mapper = new ModelMapper();
 
-    @KafkaListener(topics = "payment-processed", groupId = "order-group")
+    @KafkaListener(topics = {"payment-processed", "inventory-processed"}, groupId = "order-group")
     public void consume(OrderDTO orderDTO) {
         logger.info("Updating order: {}", orderDTO.getOrderId());
         Order order = mapper.map(orderDTO, Order.class);
