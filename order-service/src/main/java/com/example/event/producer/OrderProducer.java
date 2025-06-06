@@ -1,5 +1,6 @@
-package com.example.producer;
+package com.example.event.producer;
 
+import com.kafka.common.dto.OrderDTO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,9 @@ public class OrderProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendOrder(OrderEvent orderEvent) {
-        kafkaTemplate.send("new-orders", orderEvent.getOrderId(), orderEvent);
+    public void sendOrder(OrderDTO orderDTO) {
+        kafkaTemplate.send("new-orders", orderDTO.getOrderId(), orderDTO);
+
     }
 
 }

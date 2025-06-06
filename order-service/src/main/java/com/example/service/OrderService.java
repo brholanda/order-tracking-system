@@ -1,9 +1,10 @@
 package com.example.service;
 
 import com.example.model.Order;
-import com.example.producer.OrderProducer;
+import com.example.event.producer.OrderProducer;
 import com.example.repository.OrderRepository;
-import com.example.service.mapper.OrderEventMapper;
+import com.kafka.common.dto.OrderDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +15,14 @@ public class OrderService {
     private OrderRepository repository;
     @Autowired
     private OrderProducer producer;
+    ModelMapper mapper = new ModelMapper();
 
     public void process(Order order) {
+        OrderDTO orderDTO = mapper.map(order, OrderDTO.class);
+        producer.sendOrder(orderDTO);
+    }
+
+    public void saveOrder(Order order) {
         repository.save(order);
-        producer.sendOrder(OrderEventMapper.map(order));
     }
 }
