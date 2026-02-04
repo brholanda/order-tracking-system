@@ -1,6 +1,7 @@
 package com.example.model;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -19,5 +20,6 @@ public class Order {
     private BigDecimal amount;
     private String status = ORDER_CREATED.toString();
     @NotNull(message = "Order request must contain products")
+    @NotEmpty(message = "Order request products list should not be empty")
     private @Valid List<Product> products;
 }
