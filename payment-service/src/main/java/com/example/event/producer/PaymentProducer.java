@@ -1,6 +1,7 @@
 package com.example.event.producer;
 
 import com.kafka.common.dto.OrderDTO;
+import com.kafka.common.dto.OrderStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,12 @@ public class PaymentProducer {
     }
 
     public void sendOrder(OrderDTO orderDTO) {
-        kafkaTemplate.send("payment-processed", orderDTO.getOrderId(), orderDTO);
+        String topic = defineTopic(orderDTO);
+        kafkaTemplate.send(topic, orderDTO.getOrderId(), orderDTO);
+    }
+
+    private static String defineTopic(OrderDTO orderDTO) {
+        return orderDTO.getStatus().equals(OrderStatus.PAYMENT_DENIED) ? "payment-denied" : "payment-processed";
     }
 
 }

@@ -18,6 +18,7 @@ public class OrderService {
     ModelMapper mapper = new ModelMapper();
 
     public void process(Order order) {
+        saveOrder(order);
         OrderDTO orderDTO = mapper.map(order, OrderDTO.class);
         producer.sendOrder(orderDTO);
     }
