@@ -87,7 +87,7 @@ POST: http://localhost:8080/create
 
 ```json
 {
-  "amount": 1000,
+  "amount": 999,
   "products": [
     {
       "id": "prod-001",
@@ -132,36 +132,6 @@ MongoDB was chosen because:
 - Orders evolve over time (status updates)
 - The schema is flexible and may change
 - It avoids complex joins for this use case
-
-Each order document typically contains:
-
-- Order ID
-- Total amount
-- List of products
-- Current order status
-- Timestamps (creation / update)
-
-Example MongoDB document:
-
-```json
-{
-  "_id": "order-123",
-  "amount": 1000,
-  "status": "ORDER_COMPLETED",
-  "products": [
-    {
-      "id": "prod-001",
-      "quantity": 1
-    },
-    {
-      "id": "prod-002",
-      "quantity": 1
-    }
-  ]
-}
-```
-
-MongoDB runs in Docker and is accessed by the `order-service` via Spring Data MongoDB.
 
 ---
 
@@ -211,6 +181,10 @@ Connect to MongoDB using `mongosh`:
 
 ```bash
 mongosh mongodb://localhost:27017
+```
+Or inside the container:
+```bash
+mongosh
 ```
 
 Select the database used by the order service:
@@ -262,15 +236,6 @@ Replace `order-created` with other topics to inspect:
 - `inventory-updated`
 
 This allows you to validate that events are being produced and consumed correctly across services.
-
----
-
-## Important Configurations
-
-### Spring Boot
-
-- Basic configuration lives in `application.yml`
-- Advanced Producer/Consumer configuration can be done via `@Configuration` classes
 
 ---
 
